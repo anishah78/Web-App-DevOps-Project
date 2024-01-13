@@ -5,7 +5,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 import pyodbc
 import os
-
 # Initialise Flask App
 app = Flask(__name__)
 
@@ -46,6 +45,7 @@ class Order(Base):
     product_quantity = Column('Product Quantity', Integer)
     order_date = Column('Order Date', DateTime)
     shipping_date = Column('Shipping Date', DateTime)
+    delivery_date = Column('Delivery Date', DateTime) # Ddded delivery date column to the new order submission to include the date/time 
 
 # define routes
 # route to display orders
@@ -85,20 +85,22 @@ def add_order():
     product_quantity = request.form.get('product_quantity')
     order_date = request.form.get('order_date')
     shipping_date = request.form.get('shipping_date')
+    delivery_date = request.form['delivery_date']  # added line for delivery date
     
     # Create a session to interact with the database
     session = Session()
 
     # Create a new order object using the form data
     new_order = Order(
-        date_uuid=date_uuid,
-        user_id=user_id,
-        card_number=card_number,
-        store_code=store_code,
-        product_code=product_code,
-        product_quantity=product_quantity,
-        order_date=order_date,
-        shipping_date=shipping_date
+    date_uuid=date_uuid,
+    user_id=user_id,
+    card_number=card_number,
+    store_code=store_code,
+    product_code=product_code,
+    product_quantity=product_quantity,
+    order_date=order_date,
+    shipping_date=shipping_date,
+    delivery_date=delivery_date #added delivery date to form in which customers make new orders
     )
 
     # Add the new order to the session and commit to the database

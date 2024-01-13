@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,6 +28,7 @@
                         <th>Product Quantity</th>
                         <th>Order Date</th>
                         <th>Shipping Date</th>
+                        <th>delivery_date</th> #table including headers (delivery_date added)
                     </tr>
                 </thead>
                 <tbody>
@@ -40,6 +42,7 @@
                             <td>{{ order.product_quantity }}</td>
                             <td>{{ order.order_date }}</td>
                             <td>{{ order.shipping_date }}</td>
+                            <td>{{ order.delivery_date }}</td>  #order delivery_date
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -74,6 +77,8 @@
                 <label for="shipping_date">Shipping Date:</label>
                 <input type="text" id="shipping_date" name="shipping_date" required><br>
                 <input type="submit" value="Add Order">
+                <label for="delivery_date">Delivery Date:</label> #added a label for delivery_date
+    <input type="date" id="delivery_date" name="delivery_date"><br><br>  #added a date on the delivery date
             </form>
         </div>
     </div>
