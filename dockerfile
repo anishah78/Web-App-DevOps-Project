@@ -1,6 +1,6 @@
-FROM python:3
-WORKDIR /usr/src/app
-COPY requirements.txt ./
+FROM python:3.8-slim
+WORKDIR /app
+COPY . /app
 RUN apt-get update && apt-get install -y \
     unixodbc unixodbc-dev odbcinst odbcinst1debian2 libpq-dev gcc && \
     apt-get install -y gnupg && \
@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
 RUN pip install --upgrade pip setuptools
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
 EXPOSE 5000
-CMD ["python", "--platform=linux/amd64 public.ecr.aws/docker/library/python:3.9.10-slim-buster"]
+CMD [“python”, "app.py"]
 
 
 
