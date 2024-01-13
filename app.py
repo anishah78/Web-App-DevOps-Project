@@ -5,7 +5,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 import pyodbc
 import os
-
 # Initialise Flask App
 app = Flask(__name__)
 
@@ -100,7 +99,7 @@ def add_order():
     product_code=product_code,
     product_quantity=product_quantity,
     order_date=order_date,
-    shipping_date=shipping_date
+    shipping_date=shipping_date,
     delivery_date=delivery_date #added delivery date to form in which customers make new orders
     )
 
