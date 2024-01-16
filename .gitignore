@@ -1,0 +1,10 @@
+# Ignore Terraform files
+*.terraform
+*.terraform.lock.hcl
+*terraform.tfvars
+*terraform.tfstate
+*terraform.tfstate.backup
+
+# Ignore secret-into.yaml
+secret-into.yaml
+
