@@ -4,6 +4,7 @@
 *terraform.tfvars
 *terraform.tfstate
 *terraform.tfstate.backup
+*.gitignore
 
 # Ignore secret-into.yaml
 secret-into.yaml
