@@ -1,4 +1,4 @@
-esource "azurerm_kubernetes_cluster" "aks_cluster" {
+Resource "azurerm_kubernetes_cluster" "aks_cluster" {
   name                = var.aks_cluster
   location            = var.cluster_location
   resource_group_name = var.resource_group_name
