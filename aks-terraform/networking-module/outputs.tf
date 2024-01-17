@@ -1,17 +1,19 @@
 variable "resource_group_name" {
-  type        = string
-  description = "Name of the Azure Resource Group where networking resources will be deployed."
-  default     = "defaultResourceGroup"  # Provided a default value
+  description = "Name of the Azure resource group"
+  value = azurerm_resource_group.networking.name
 }
 
-variable "location" {
-  type        = string
-  description = "Azure region where networking resources will be deployed."
-  default     = "location"  # Provided a default value
+variable "vnet_id" {
+  description = "ID of the Azure Virtual Network"
+  value = azurerm_virtual_network.aks_vnet.id
 }
 
-variable "vnet_address_space" {
-  type        = list(string)
-  description = "Address space for the Virtual Network (VNet)."
-  default     = ["82.31.245.149"]  # Provided a default value for the source address
+variable "control_plane_subnet_id" {
+  description = "ID of the control plane subnet"
+  value = azurerm_subnet.control_plane_subnet.id
+}
+
+variable "worker_node_subnet_id" {
+  description = "ID of the worker node subnet"
+  value = azurerm_subnet.worker_node_subnet.id
 }
