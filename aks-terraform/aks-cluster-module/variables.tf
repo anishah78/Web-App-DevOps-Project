@@ -28,22 +28,24 @@ variable "service_principal_secret" {
   type        = string
 }
 
-output "resource_group_name" {
+# included output variables from networking module as input variables
+
+variable "resource_group_name" {
   description = "Name of the Azure resource group"
-  value = azurerm_resource_group.networking.name
+  type        = string
 }
 
-output "vnet_id" {
+variable "vnet_id" {
   description = "ID of the Azure Virtual Network"
-  value = azurerm_virtual_network.aks_vnet.id
+  type        = string
 }
 
-output "control_plane_subnet_id" {
+variable "control_plane_subnet_id" {
   description = "ID of the control plane subnet"
-  value = azurerm_subnet.control_plane_subnet.id
+  type        = string
 }
 
-output "worker_node_subnet_id" {
+variable "worker_node_subnet_id" {
   description = "ID of the worker node subnet"
-  value = azurerm_subnet.worker_node_subnet.id
+  type        = string
 }
