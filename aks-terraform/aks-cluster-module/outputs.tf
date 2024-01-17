@@ -11,6 +11,6 @@ output "aks_cluster_id" {
 }
 
 output "aks_kubeconfig" {
-  description = "Kubernetes configuration file for the AKS cluster"
-  value       = azurerm_kubernetes_cluster.aks_cluster.kube_config[0].raw_kube_config
+  description = "Kubeconfig file for accessing the AKS cluster."
+  value       = azurerm_kubernetes_cluster.aks_cluster.kube_config_raw
 }

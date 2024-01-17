@@ -1,4 +1,4 @@
-variable "aks_cluster" {
+variable "aks_cluster_name" {
   description = "Name of the AKS cluster" #defined input variable to customise aks_cluster name
   type        = string
 }
@@ -23,7 +23,7 @@ variable "service_principal_client_id" {
   type        = string
 }
 
-variable "service_principal_secret" {
+variable "service_principal_client_secret" {
   description = "Client Secret for the service principal associated with the cluster"
   type        = string
 }
