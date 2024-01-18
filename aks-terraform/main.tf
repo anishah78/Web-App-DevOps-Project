@@ -31,7 +31,7 @@ module "aks_cluster" {
   # Input variables for the AKS cluster module
   aks_cluster_name           = "terraform-aks-cluster"
   cluster_location           = "UK South"
-  dns_prefix                 = "anishah-project"
+  dns_prefix                 = "myaks-project"
   kubernetes_version         = "1.26.6"  # Adjust the version as needed
   service_principal_client_id = "66cd9882-ab20-47ac-bd58-e077cdcd37c0"
   service_principal_client_secret = "_aW8Q~YtSrXXk5RZK2E-vBrkKmFuFVbvmXFN.bHn"
