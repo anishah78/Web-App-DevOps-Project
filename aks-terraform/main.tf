@@ -9,10 +9,10 @@ terraform {
 # defined azure provider 
 provider "azurerm" {
     features {}
-  client_id       = "66cd9882-ab20-47ac-bd58-e077cdcd37c0"
-  client_secret   = "_aW8Q~YtSrXXk5RZK2E-vBrkKmFuFVbvmXFN.bHn"
-  subscription_id = "69974029-8ad2-4473-b2e5-a1fb53a6ad13"
-  tenant_id       = "47d4542c-f112-47f4-92c7-a838d8a5e8ef"
+  #client_id       = "your client id here" 
+  #client_secret   = "your client secret here"
+  #subscription_id = "your subscription id" 
+  #tenant_id       = "your tenant id"
 }
 
 module "networking" {
