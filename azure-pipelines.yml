@@ -12,7 +12,7 @@ pool:
 steps:
 - task: Docker@2
   inputs:
-    containerRegistry: 'aks-service-connection'
+    containerRegistry: 'Docker Hub'
     repository: 'anishahh/devops'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
