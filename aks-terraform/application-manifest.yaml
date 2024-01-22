@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask-app
+  template:
+    metadata:
+      labels:
+        app: flask-app
+    spec:
+      containers:
+      - name: flask-app-container
+        image: anishahh/devops:latest # This will be pulled from my Docker Hub repository.
+        ports:
+        - containerPort: 5000
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1   
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-app-service
+spec:
+  selector:
+    app: flask-app
+  ports: # Configuring the service to use TCP protocol on port 80 within the cluster, directing traffic to the pods on port 5000.
+    - protocol: TCP  
+      port: 80      
+      targetPort: 5000
+  type: ClusterIP #Specifying the service type as ClusterIP, making it an internal service within the AKS cluster.
