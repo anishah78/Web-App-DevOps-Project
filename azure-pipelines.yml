@@ -24,4 +24,4 @@ steps:
     azureSubscriptionConnection: 'Anishah Hussain DevOps(69974029-8ad2-4473-b2e5-a1fb53a6ad13)'
     azureResourceGroup: 'networking-rg'
     kubernetesCluster: 'terraform-aks-cluster'
-    manifests: 'application.manifest.yaml'
+    manifests: 'application-manifest.yaml'
