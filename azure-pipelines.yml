@@ -15,7 +15,7 @@ steps:
     containerRegistry: 'Docker Hub'
     repository: 'anishahh/devops'
     command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile'
+    Dockerfile: '**/dockerfile'
     tags: 'latest'
 # - task: KubernetesManifest@1
 #   inputs:
