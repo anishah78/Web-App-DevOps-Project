@@ -17,11 +17,11 @@ steps:
     command: 'buildAndPush'
     Dockerfile: '**/dockerfile'
     tags: 'latest'
-# - task: KubernetesManifest@1
-#   inputs:
-#     action: 'deploy'
-#     connectionType: 'azureResourceManager'
-#     azureSubscriptionConnection: 'aks service connection'
-#     azureResourceGroup: 'networking-rg'
-#     kubernetesCluster: 'terraform-aks-cluster'
-#     manifests: 'application-manifest.yaml'
+- task: KubernetesManifest@1
+  inputs:
+    action: 'deploy'
+    connectionType: 'azureResourceManager'
+    azureSubscriptionConnection: 'Anishah Hussain DevOps(69974029-8ad2-4473-b2e5-a1fb53a6ad13)'
+    azureResourceGroup: 'networking-rg'
+    kubernetesCluster: 'terraform-aks-cluster'
+    manifests: 'application.manifest.yaml'
