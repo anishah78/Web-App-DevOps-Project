@@ -30,7 +30,7 @@ secret_client = SecretClient(vault_url=key_vault_url, credential=credential)
 user = secret_client.get_secret ("db-user").value
 database = secret_client.get_secret ("db-database").value
 password = secret_client.get_secret ("db-password").value
-server = secret_client.get_secret ("sb-server").value
+server = secret_client.get_secret ("db-server").value
 
 
 # Access the secret values
