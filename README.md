@@ -63,12 +63,12 @@ To run the application, you simply need to run the `app.py` script in this repos
 # Architecture of Project
 
 
-# Delivery Date
+## Delivery Date
 
 
-# Dockerfile
+## Dockerfile
 Developing a Dockerfile for the application involves encapsulating all essential dependencies and configuration settings. This containerization process ensures uniform application packaging and streamlines the deployment process.
-# step 1
+### step 1
 **Base Image Selection:**
 Begin by selecting an official Python runtime as the parent image. For a Flask application, python:3.8-slim is a suitable choice. 
 
@@ -87,27 +87,27 @@ Facilitate external access to your Flask application from outside the container 
 **Define Startup Command:**
 Employ the CMD instruction to specify the command executed upon container launch. In this case, the command should run the file initiating the Flask application.
 
-# step 2 
+### step 2 
 Proceed to build your Docker image as it stands by executing the following command: docker build -t <name_of_the_image> .
 
-# step 3 
+### step 3 
 Run a local Docker container to verify the proper functioning of the application within the containerized environment. Initiate the Docker container by executing the following command: docker run -p 5000:5000 <name_of_the_image>. This command maps port 5000 from your local machine to the container, facilitating access to the containerized application from your local development environment. Access the application within the Docker container by opening a web browser and navigating to http://127.0.0.1:5000. Confirm the expected functionality of the application by testing its features within the containerized environment.
 
-# step 4 
+### step 4 
 Label your Docker image with pertinent details. Specify the image name, version, and Docker Hub repository using the following format: docker tag <name_of_the_image> <docker_hub_username>/<image_name>:<tag>. Employ the `docker push` command to upload the Docker image to Docker Hub. To ensure accessibility, perform a test by pulling the image from Docker Hub, preferably in your local development environment. After successfully pulling the image, run the container and confirm that the application functions as expected.
 
-# Terraform
+## Terraform
 This will serve as the foundation for provisioning an Azure Kubernetes Service (AKS) cluster using infrastructure as code (IaC)
 
-## Define the networking module 
-## variable.tf
+### Define the networking module 
+### variable.tf
 The following two variables should of type string, and one show be of type list (string)
 Create the following variables:
 - Resource_group_name variable: A container that includes the relevant Azure resources to be managed and deployed.
 - Location variable: the location where the AKS cluster service will be situated. 
 - vnet_address_space: a defined range of virtual addressed allocated to communicate among tasks within the resource group. 
 
-## main.tf
+### main.tf
 Establish the fundamental networking resources required for an AKS cluster. This encompasses the creation of an Azure Resource Group, a VNet, two subnets (for the control plane and worker nodes), and a Network Security Group (NSG). 
 Assign the following names to these resources:
 1. **Azure Resource Group:** variable created earlier (container that includes relevant Azure resoucers to be managed and deployed).
@@ -116,7 +116,7 @@ Assign the following names to these resources:
 4. **Worker Node Subnet:** (A virtual machine that processes a portion of an application's workload).
 5. **Network Security Group (NSG):** (Security rules that manage inbound and outbound traffic for several types of Azure resources)
 
-## outputs.tf
+### outputs.tf
 Define the following output variables:
 1. **vnet_id:** (Stores the ID of the previously created VNet, facilitating connection to the cluster module).
 2. **control_plane_subnet_id:** (Holds the ID of the control plane subnet within the VNet, specifying the subnet for AKS cluster control plane components).
@@ -126,7 +126,7 @@ Define the following output variables:
 
 Finally, you would now use the following command terraform init to initalise the directory. 
 
-# Defining and AKS cluster
+## Defining and AKS cluster
 Define the subsequent input variables:
 1. **aks_cluster_name:** (Represents the name of the AKS cluster to be created).
 2. **cluster_location:** (Specifies the Azure region where the AKS cluster will be deployed).
@@ -141,7 +141,7 @@ Additionally, you would include the output variables as input variables in this 
 3. **control_plane_subnet_id:** (The ID of the control plane subnet within the VNet).
 4. **worker_node_subnet_id:** (The ID of the worker node subnet within the VNet).
 
-## cluster module output variables 
+### cluster module output variables 
 output variables:
 1. **aks_cluster_name:** (Stores the name of the provisioned cluster).
 2. **aks_cluster_id:** (Stores the ID of the cluster).
