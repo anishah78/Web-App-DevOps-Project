@@ -3,7 +3,6 @@
 Welcome to the Web App DevOps Project repo! This application allows you to efficiently manage and track orders for a potential business. It provides an intuitive user interface for viewing existing orders and adding new ones.
 
 ## Table of Contents
-
 - [Features](#features)
 - [Getting Started](#getting-started)
 - [Technology Stack](#technology-stack)
@@ -11,7 +10,6 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
 - [Delivery date](#delivery-date)
 - [Dockerfile](#dockerfile)
 - [Terraform] (#terraform)
-- [Progression](#progression)
 - [Contributors](#contributors)
 - [License](#license)
 
@@ -60,7 +58,7 @@ To run the application, you simply need to run the `app.py` script in this repos
 
 - **Database:** The application employs an Azure SQL Database as its database system to store order-related data.
 
-# Architecture of Project
+# DevOps Pipeline Architecture 
 
 
 ## Delivery Date
@@ -148,11 +146,38 @@ output variables:
 3. **aks_kubeconfig:** (Captures the Kubernetes configuration file of the cluster, crucial for interacting with and managing the AKS cluster using kubectl).
 Once you've configured the settings, initiate the directory using `terraform init`. The setup will be on the main branch within the aks-cluster directory.
 
-# Creating an AKS cluster 
+## Creating an AKS cluster 
+Integrate the networking resources previously defined in their respective module so they are accessible in the main project.
+Ensure that you supply the specified input variables when invoking the module:
+- Set `resource_group_name` to a descriptive name, for instance, "networking-rg."
+- Set `location` to an Azure region geographically close to you to enhance latency (e.g., "UK South").
+- Set `vnet_address_space` to ["10.0.0.0/16"].
+## integrate the cluster module 
+Assign the following values to the specified input variables when invoking the module:
+- Set `cluster_name` to "terraform-aks-cluster."
+- Set `location` to an Azure region geographically close to you to enhance latency (e.g., "UK South").
+- Set `dns_prefix` to "myaks-project."
+- Set `kubernetes_version` to a supported Kubernetes version by AKS, such as "1.26.6."
+- Set `service_principal_client_id` and `service_principal_secret` to your service principal credentials.
+- Utilise variables referencing the output variables from the networking module for the remaining input variables required by the cluster module, including `resource_group_name`, `vnet_id`, `control_plane_subnet_id`, `worker_node_subnet_id`, and `aks_nsg_id`.
+
+After configuring the settings, initialise the directory using `terraform init`. The setup will be on the main branch within the aks-terraform directory. Once all configurations are initialised, execute `terraform apply` to create the cluster in Azure using AKS (Azure Kubernetes Services).
+
+### service principal 
+Ensure you create a service principle to do this follow the command below, this ensures restriction to sensitive information
+az ad sp create-for-rbac --name {name} --role contributor --scopes /subscriptions/{your-subscription-id}
+
+## Kubernetes Deployment to AKS 
+
+
+
+
+
 
 ## Contributors 
 
 - [Maya Iuga]([https://github.com/yourusername](https://github.com/maya-a-iuga))
+- [Anishah Hussain] (https://github.com/anishah78/Web-App-DevOps-Project.git)
 
 ## License
 
