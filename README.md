@@ -59,7 +59,7 @@ To run the application, you simply need to run the `app.py` script in this repos
 - **Database:** The application employs an Azure SQL Database as its database system to store order-related data.
 
 # DevOps Pipeline Architecture 
-
+![Alt text](image.png)
 
 ## Delivery Date
 
@@ -125,7 +125,8 @@ Define the following output variables:
 Finally, you would now use the following command terraform init to initalise the directory. 
 
 ## Defining and AKS cluster
-Define the subsequent input variables:
+### Define the subsequent input variables:
+input variables: 
 1. **aks_cluster_name:** (Represents the name of the AKS cluster to be created).
 2. **cluster_location:** (Specifies the Azure region where the AKS cluster will be deployed).
 3. **dns_prefix:** (Defines the DNS prefix of the cluster).
@@ -168,17 +169,56 @@ Ensure you create a service principle to do this follow the command below, this 
 az ad sp create-for-rbac --name {name} --role contributor --scopes /subscriptions/{your-subscription-id}
 
 ## Kubernetes Deployment to AKS 
+Kubernetes automates the orchestration of containerised applications, streamlining processes such as scaling, software deployment, and management.
+### Kubernetes manifest definition - deployment 
+Create a Kubernetes manifest file named "application-manifest.yaml." Define a Deployment resource named "flask-app-deployment." Specify two replicas for concurrent running in the AKS cluster, using the label "app: flask-app" in the selector field. In the metadata section, use the label "app: flask-app" for the pod template. Point to the Docker Hub-hosted container for deployment. Expose port 5000 for AKS cluster communication. Implement the Rolling Updates deployment strategy to maintain application availability during updates.
+### Kubernetes manifest defintion - services 
+Add a Kubernetes Service manifest to the existing application-manifest.yaml for internal communication within the AKS cluster. You can include multiple manifests in the same .yaml file using the --- operator between distinct services configurations. This manifest should:
+- Define a service named "flask-app-service" as a reference for routing internal communication.
+- Ensure the selector matches the labels (app: flask-app) of the previously defined pods in the Deployment manifest, directing traffic efficiently to the appropriate pods for seamless internal communication.
+- Configure the service to use TCP protocol on port 80 for internal communication within the cluster. Set the targetPort to 5000, corresponding to the port exposed by your container.
+- Set the service type to ClusterIP, designating it as an internal service within the AKS cluster.
+### Testing and validating deployments on AKS 
+- verify the health of your pods and services, commence port forwarding using the kubectl port-forward <pod-name> 5000:5000 command. This command establishes a secure channel to your application, enabling local interaction.
+- With port forwarding established, access your web application hosted within the AKS cluster locally at http://127.0.0.1:5000.
 
+## CI/CD Pipeline with Azure DevOps
+- Continuous Integration (CI) involves automatically integrating code changes into a shared repository, triggering an automated build process for code compilation and testing. 
+- Continuous Deployment (CD) extends this by automating deployment to different environments. Azure DevOps, a Microsoft toolset, provides services for version control, build automation, and release management, enabling teams to automate and streamline software delivery. 
 
+Allowing for automating the building, testing, and deployment of software applications with Azure DevOps for rapid and reliable delivery.
 
+### Initialise DevOps Pipeline 
+The initial step is to configure the source repository for the pipeline. Opt for GitHub as the source control system hosting your application code, ensuring the selection of the repository you've been using in your work thus far.
 
+### Azure DevOps-Docker Hub connection 
+Establish a service connection between Azure DevOps and the Docker Hub account hosting the application image, ensuring smooth integration of the CI/CD pipeline with the Docker Hub container registry. Follow these steps to configure this connection:
+1. Generate a personal access token on Docker Hub.
+2. Configure an Azure DevOps service connection to utilise this token.
+3. Confirm the successful establishment of the connection.
+
+### Configure pipeline for docker image build and push 
+Adjust your pipeline configuration to enable building and pushing a Docker image to Docker Hub. 
+1. Integrate the Docker task with the buildandPush command into your pipeline. Use the same Docker image name as when pushing to Docker Hub from your local development environment.
+2. Configure the pipeline to run automatically with each push to the main branch of the application repository.
+3. Execute the CI/CD pipeline and subsequently test the newly created Docker image. Pull the latest version from Docker Hub on your local environment, run the container, and assess its functionality to ensure the application works as expected.
+
+### Azure DevOps-AKS Connection
+Establish and set up an AKS service connection in Azure DevOps. This connection facilitates a secure link between the CI/CD pipeline and the AKS cluster, ensuring smooth deployments and efficient management.
+
+### pipeline for kubernetes deployment
+Adjust the configuration of the CI/CD pipeline to include the Deploy to Kubernetes task with the deploy kubectl command.
+- Utilise the deployment manifest within the application repository and the previously established AKS connection to facilitate the automatic deployment of the application to the AKS cluster.
+
+### Testing and validation of CI/CD pipleline 
+To securely access your application running on AKS, commence port forwarding using kubectl. Access the locally exposed address supplied by the cluster and test your application's functionality to ensure it operates correctly, thereby validating the CI/CD pipeline's effectiveness in deploying the application.
+
+## AKS Cluster Monitoring 
 
 
 ## Contributors 
-
 - [Maya Iuga]([https://github.com/yourusername](https://github.com/maya-a-iuga))
 - [Anishah Hussain] (https://github.com/anishah78/Web-App-DevOps-Project.git)
 
 ## License
-
 This project is licensed under the MIT License. For more details, refer to the [LICENSE](LICENSE) file.
