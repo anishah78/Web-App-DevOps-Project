@@ -37,6 +37,8 @@ For the application to succesfully run, you need to install the following packag
 - pyodbc (version 4.0.39)
 - SQLAlchemy (version 2.0.21)
 - werkzeug (version 2.2.3)
+- azure-identity (version 1.15.0)
+- azure-keyvault-secrets (version 4.7.0)
 
 ### Usage
 
@@ -53,6 +55,74 @@ To run the application, you simply need to run the `app.py` script in this repos
 - **Frontend:** The user interface is designed using HTML, CSS, and JavaScript to ensure a smooth and intuitive user experience.
 
 - **Database:** The application employs an Azure SQL Database as its database system to store order-related data.
+
+## Architecture of Project
+
+
+## Delivery Date
+
+
+## Dockerfile
+Developing a Dockerfile for the application involves encapsulating all essential dependencies and configuration settings. This containerization process ensures uniform application packaging and streamlines the deployment process.
+# step 1
+**Base Image Selection:**
+Begin by selecting an official Python runtime as the parent image. For a Flask application, python:3.8-slim is a suitable choice. 
+
+**Set the Working Directory:**
+Utilize the WORKDIR instruction to establish the working directory in the container. Set it to /app, a commonly used directory for web applications.
+
+**Copy Application Files:**
+Utilise the COPY instruction to transfer the contents of your local directory into the container's /app directory. This ensures accessibility of your application code and files within the container.
+
+**Install Python Packages from requirements.txt:**
+Install the Python packages outlined in your requirements.txt file. This file should encompass all the necessary packages for the successful execution of the application. Execute the command `pip install --trusted-host pypi.python.org -r requirements.txt` to install these packages.
+
+**Expose Port 5000:**
+Facilitate external access to your Flask application from outside the container by specifying the exposure of port 5000.
+
+**Define Startup Command:**
+Employ the CMD instruction to specify the command executed upon container launch. In this case, the command should run the file initiating the Flask application.
+
+# step 2 
+Proceed to build your Docker image as it stands by executing the following command: docker build -t <name_of_the_image> .
+
+# step 3 
+Run a local Docker container to verify the proper functioning of the application within the containerized environment. Initiate the Docker container by executing the following command: docker run -p 5000:5000 <name_of_the_image>. This command maps port 5000 from your local machine to the container, facilitating access to the containerized application from your local development environment. Access the application within the Docker container by opening a web browser and navigating to http://127.0.0.1:5000. Confirm the expected functionality of the application by testing its features within the containerized environment.
+
+# step 4 
+Label your Docker image with pertinent details. Specify the image name, version, and Docker Hub repository using the following format: docker tag <name_of_the_image> <docker_hub_username>/<image_name>:<tag>. Employ the `docker push` command to upload the Docker image to Docker Hub. To ensure accessibility, perform a test by pulling the image from Docker Hub, preferably in your local development environment. After successfully pulling the image, run the container and confirm that the application functions as expected.
+
+## Terraform
+This will serve as the foundation for provisioning an Azure Kubernetes Service (AKS) cluster using infrastructure as code (IaC)
+
+# Define the networking module 
+# variable.tf
+The following two variables should of type string, and one show be of type list (string)
+Create the following variables:
+- Resource_group_name variable: A container that includes the relevant Azure resources to be managed and deployed.
+- Location variable: the location where the AKS cluster service will be situated. 
+- vnet_address_space: a defined range of virtual addressed allocated to communicate among tasks within the resource group. 
+
+# main.tf
+Establish the fundamental networking resources required for an AKS cluster. This encompasses the creation of an Azure Resource Group, a VNet, two subnets (for the control plane and worker nodes), and a Network Security Group (NSG). 
+Assign the following names to these resources:
+1. **Azure Resource Group:** variable created earlier (container that includes relevant Azure resoucers to be managed and deployed).
+2. **Virtual Network (VNet):** (Allows resources to communicate with each other).
+3. **Control Plane Subnet:** (Manages the resources and clusters such as nodes and pods).
+4. **Worker Node Subnet:** (A virtual machine that processes a portion of an application's workload).
+5. **Network Security Group (NSG):** (Security rules that manage inbound and outbound traffic for several types of Azure resources)
+
+# outputs.tf
+Define the following output variables:
+1. **vnet_id:** (Stores the ID of the previously created VNet, facilitating connection to the cluster module).
+2. **control_plane_subnet_id:** (Holds the ID of the control plane subnet within the VNet, specifying the subnet for AKS cluster control plane components).
+3. **worker_node_subnet_id:** (Stores the ID of the worker node subnet within the VNet, specifying the subnet for AKS cluster worker nodes).
+4. **networking_resource_group_name:** (Provides the name of the Azure Resource Group where networking resources were provisioned, ensuring alignment with the cluster module resources).
+5. **aks_nsg_id:** (Stores the ID of the Network Security Group (NSG), facilitating association with the AKS cluster for security rule enforcement and traffic filtering).
+
+Finally, you would now use the following command terraform init to initalise the directory. 
+
+## Defining and AKS cluster
 
 ## Contributors 
 
