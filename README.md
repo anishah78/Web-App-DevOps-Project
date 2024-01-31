@@ -68,11 +68,14 @@ To run the application, you simply need to run the `app.py` script in this repos
 ![Alt text](image.png)
 
 ## Delivery Date
+A delivery date column was added to app.py and orders.html files in the main branch by creating and merging branches from feature/add-delivery-date into main. In feature/add-delivery-date, modify the branch to add the delivery date to both files using Visual Studio Code/Git Bash. After the changes, use git add . to stage them, git commit -m "message" to the local repository, and git push --set-upstream origin feature/add-delivery-date to set up the branch in the remote repository. Finally, git push. Make a pull request from feature/add-delivery-date into main, review the changes, and merge the two branches.
 
+### Reverting Changes:
+It was unnecessary to modify the files, and the changes needed to be reverted using git pull to fetch contents from the remote repository (common practice in group work). Create a feature branch using git branch revert-delivery-date from the main branch. Switch to the branch using git checkout revert-delivery-date, use the git log command to find the log before merging into main, and git revert {number-of-revert} to revert the changes. Use git add . to stage the changes, git commit -m "message" to the local repository, and git push --set-upstream origin revert-delivery-date to create the branch. Finally, git push the changes into the remote repository. Make a pull request, check the changes into the main branch, and merge the two branches. Check out the main branch to see the changes made.
 
 ## Dockerfile
 Developing a Dockerfile for the application involves encapsulating all essential dependencies and configuration settings. This containerization process ensures uniform application packaging and streamlines the deployment process.
-### step 1
+### Step 1
 **Base Image Selection:**
 Begin by selecting an official Python runtime as the parent image. For a Flask application, python:3.8-slim is a suitable choice. 
 
@@ -91,13 +94,13 @@ Facilitate external access to your Flask application from outside the container 
 **Define Startup Command:**
 Employ the CMD instruction to specify the command executed upon container launch. In this case, the command should run the file initiating the Flask application.
 
-### step 2 
+### Step 2 
 Proceed to build your Docker image as it stands by executing the following command: docker build -t <name_of_the_image> .
 
-### step 3 
+### Step 3 
 Run a local Docker container to verify the proper functioning of the application within the containerized environment. Initiate the Docker container by executing the following command: docker run -p 5000:5000 <name_of_the_image>. This command maps port 5000 from your local machine to the container, facilitating access to the containerized application from your local development environment. Access the application within the Docker container by opening a web browser and navigating to http://127.0.0.1:5000. Confirm the expected functionality of the application by testing its features within the containerized environment.
 
-### step 4 
+### Step 4 
 Label your Docker image with pertinent details. Specify the image name, version, and Docker Hub repository using the following format: docker tag <name_of_the_image> <docker_hub_username>/<image_name>:<tag>. Employ the `docker push` command to upload the Docker image to Docker Hub. To ensure accessibility, perform a test by pulling the image from Docker Hub, preferably in your local development environment. After successfully pulling the image, run the container and confirm that the application functions as expected.
 
 ## Terraform
@@ -270,6 +273,30 @@ Provide names and secret values acting as passwords.
 After configuration, create the secrets.
 Ensure that both the secrets and database credentials in app.py share the same name.
 
+### User-Assigned Managed Identity:
+It provides secure access to various Azure services and can be used for authenticating and authorizing access to other Azure resources.
+
+To create a user-assigned managed identity use the following command: az identity create -g {Resource-Group-name} -n {name-the-User-Identity}. 
+
+### Integrating Azure Key Vault with AKS
+To apply Managed Identity for AKS use the following command: az aks update --resource-group <resource-group> --name <aks-cluster-name> --enable-managed-identity. Ensure to your the resource goup ID and the terraform cluster ID you created earlier. 
+
+### Grant Key Vault permissions to the managed identity
+Enusre to use the followjng command to assign your key valuts secret officer: az role assignment create --role "Key Vault Secrets Officer" \
+--assignee <managed-identity-client-id> \
+--scope subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.KeyVault/vaults/{key-vault-name}. 
+
+### Testing Phase:
+1. Push modified app.py and requirements.txt to the main branch.
+2. Delete old pods for new pods to be used.
+3. Use kubectl port-forward {name-of-pod} 5000:5000 to access the application.
+4. Add a new order to check if it interacts with the database.
+5. Optional: to verify the order,  place an order on screen.
+
+### Python libaries and requirements to add 
+install the following applicaitons as well as updates the requirements.txt file with the version you have installed: 
+- pip install azure-identity
+- pip install azure-keyvault-secrets
 
 ## Contributors 
 - [Maya Iuga]([https://github.com/yourusername](https://github.com/maya-a-iuga))
