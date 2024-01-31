@@ -26,7 +26,7 @@ variable "service_principal_client_id" {
 variable "service_principal_client_secret" {
   description = "Client Secret for the service principal associated with the cluster"
   type        = string
-}
+} 
 
 # included output variables from networking module as input variables
 

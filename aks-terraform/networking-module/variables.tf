@@ -15,3 +15,8 @@ variable "vnet_address_space" {
     default = ["10.0.0.0/16"] # Provided a default value for the source address
   
 }
+
+variable "Ip_address" {
+  description = "IP address" 
+  type        = string
+}

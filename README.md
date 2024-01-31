@@ -9,7 +9,13 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
 - [Usage](#usage)
 - [Delivery date](#delivery-date)
 - [Dockerfile](#dockerfile)
-- [Terraform] (#terraform)
+- [Terraform] (#Terraform)
+- [Defining and AKS cluster] (#Defining-and-AKS-cluster)
+- [Creating an AKS cluster] (#Creating-an-AKS-cluster)
+- [Kubernetes Deployment to AKS] (#Kubernetes-Deployment-to-AKS)
+- [CI/CD Pipeline with Azure DevOps] (#CI/CD-Pipeline-with-Azure-DevOps)
+- [AKS Cluster Monitoring] (#AKS-Cluster-Monitoring)
+- [Azure Key Vault for Secrets Management] (#Azure-Key-Vault-For-Secrets-Management)
 - [Contributors](#contributors)
 - [License](#license)
 
@@ -153,7 +159,7 @@ Ensure that you supply the specified input variables when invoking the module:
 - Set `resource_group_name` to a descriptive name, for instance, "networking-rg."
 - Set `location` to an Azure region geographically close to you to enhance latency (e.g., "UK South").
 - Set `vnet_address_space` to ["10.0.0.0/16"].
-## integrate the cluster module 
+### integrate the cluster module 
 Assign the following values to the specified input variables when invoking the module:
 - Set `cluster_name` to "terraform-aks-cluster."
 - Set `location` to an Azure region geographically close to you to enhance latency (e.g., "UK South").
@@ -214,6 +220,55 @@ Adjust the configuration of the CI/CD pipeline to include the Deploy to Kubernet
 To securely access your application running on AKS, commence port forwarding using kubectl. Access the locally exposed address supplied by the cluster and test your application's functionality to ensure it operates correctly, thereby validating the CI/CD pipeline's effectiveness in deploying the application.
 
 ## AKS Cluster Monitoring 
+Generate, configure, and save the following charts in Metrics Explorer:
+1. **Average Node CPU Usage:** (Track the CPU usage of your AKS cluster's nodes. This aids in efficient resource allocation and identifies potential performance issues).
+2. **Average Pod Count:** (Display the average number of pods running in your AKS cluster. This metric is essential for evaluating the cluster's capacity and workload distribution).
+3. **Used Disk Percentage:** (Monitor disk usage to prevent storage-related issues. This chart helps track the amount of utilised disk space).
+4. **Bytes Read and Written per Second:** (Monitor data I/O for identifying potential performance bottlenecks. This chart provides insights into data transfer rates).
+
+Access the dashboard where the charts are saved and verify the correct visualisation of the data.
+
+### log analytics configuration 
+Configure Log Analytics to execute and store the following logs:
+1. **Average Node CPU Usage Percentage per Minute:** (capture granular data on node-level CPU usage, with logs recorded per minute).
+2. **Average Node Memory Usage Percentage per Minute:** (Similar to CPU usage, monitor memory usage at the node level to detect memory-related performance concerns and efficiently allocate resources).
+3. **Pods Counts with Phase:** (Provide information on the count of pods with different phases, including Pending, Running, or Terminating. Gain insights into pod lifecycle management and ensure the appropriate distribution of the cluster's workload).
+4. **Find Warning Value in Container Logs:** (Configure Log Analytics to search for warning values in container logs, proactively detecting issues or errors within your containers for prompt troubleshooting and resolution).
+5. **Monitoring Kubernetes Events:** (Monitor Kubernetes events, such as pod scheduling, scaling activities, and errors, crucial for tracking the overall health and stability of the cluster).
+
+### Alert configuration 
+- Establish an alert rule to activate an alarm when the used disk percentage in the AKS cluster surpasses 90%. This alert is crucial for proactively identifying and resolving potential disk issues that may result in performance degradation and service interruptions.
+- The alert should be set to check every 5 minutes with a loopback period of 15 minutes. Configure the alert to send notifications to your email address, enabling you to assess the best strategy for responding to these alarms.
+- Modify the alert rules for CPU usage and memory working set percentage to activate when they surpass 80%. CPU and memory are vital resources in your AKS cluster, and their heavy utilization can result in decreased application performance. Setting alert rules to trigger at 80% ensures timely notifications when these resources approach critical levels.
+
+## Azure Key Vault for Secrets Management 
+Azure Key Vault serves as a robust solution for securely storing and managing sensitive information, providing a scalable and centralized platform for safeguarding such data. 
+
+### Creating an Azure Key Vault:
+
+Locate the Key Vaults service.
+Click on the '+ Create' button.
+Choose the subscription and either select a resource group or create one.
+Provide a unique name for the Key Vault.
+Select the region for your Key Vault.
+After making changes, click 'Review + create' to double-check settings.
+Click 'Create' to initiate the deployment of your Azure Key Vault.
+Assigning RBAC Roles in Key Vault:
+
+### Select a Key Vault.
+Choose the 'Access control (IAM)' tab.
+Click '+ Add' and choose 'Add a role assignment.'
+Select 'Key Vault Administrator' from the list.
+In 'Members,' click 'Select members' and choose the member to add.
+After adding users, click 'Review + assign.'
+Adding Secrets in Key Vault:
+
+### Locate your Key Vault and select the Secrets tab.
+Click '+ Generate/Import' and configure your secrets.
+Create 4 secrets for environment variables.
+Provide names and secret values acting as passwords.
+After configuration, create the secrets.
+Ensure that both the secrets and database credentials in app.py share the same name.
 
 
 ## Contributors 

@@ -9,10 +9,10 @@ terraform {
 # defined azure provider 
 provider "azurerm" {
     features {}
-  #client_id       = "your client id here" 
-  #client_secret   = "your client secret here"
-  #subscription_id = "your subscription id" 
-  #tenant_id       = "your tenant id"
+  client_id       = var.client_id
+  client_secret   = var.client_secret
+  subscription_id = var.subscription_id 
+  tenant_id       = var.tenant_id
 }
 
 module "networking" {
@@ -22,7 +22,7 @@ module "networking" {
   resource_group_name = "networking-rg" # Creating the resource group name
   location           = "UK South" # Location of the Cluster
   vnet_address_space = ["10.0.0.0/16"] # The address space specifies the range of IP addresses that can be used within the virtual network.
-
+  Ip_address = var.Ip_address
 }
 
 module "aks_cluster" {
@@ -33,8 +33,8 @@ module "aks_cluster" {
   cluster_location           = "UK South"
   dns_prefix                 = "myaks-project"
   kubernetes_version         = "1.26.6"  # Adjust the version as needed
-  service_principal_client_id = "66cd9882-ab20-47ac-bd58-e077cdcd37c0"
-  service_principal_client_secret = "_aW8Q~YtSrXXk5RZK2E-vBrkKmFuFVbvmXFN.bHn"
+  service_principal_client_id = var.service_principal_client_id
+  service_principal_client_secret = var.service_principal_client_secret
 
   # Input variables referencing outputs from the networking module
   resource_group_name         = module.networking.resource_group_name
